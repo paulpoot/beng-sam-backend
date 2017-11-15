@@ -12,5 +12,5 @@
 */
 
 $router->get('/', function () use ($router) {
-    return "Lumen is running...";
+    return "Lumen is running. Conversation count: " . App\Conversation::count();
 });

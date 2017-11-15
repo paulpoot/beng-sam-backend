@@ -23,11 +23,15 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__.'/../')
 );
 
-// $app->withFacades();
+$app->withFacades();
 
-$app->register(Jenssegers\Mongodb\MongodbServiceProvider::class);
+if ($app->environment('production')) {
+    $app->register(Jenssegers\Mongodb\MongodbServiceProvider::class);
+}
 
 $app->withEloquent();
+
+$app->register(Laravel\Tinker\TinkerServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
