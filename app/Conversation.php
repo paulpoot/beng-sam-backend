@@ -3,8 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 
-class Conversation extends Model
+class Conversation extends Eloquent
 {
     /**
      * The attributes that are mass assignable.

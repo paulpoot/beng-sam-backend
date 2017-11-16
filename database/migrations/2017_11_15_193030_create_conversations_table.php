@@ -17,7 +17,6 @@ class CreateConversationsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->integer('user_id');
-            $table->integer('bot_id');
             $table->nullableTimestamps();
 
             // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

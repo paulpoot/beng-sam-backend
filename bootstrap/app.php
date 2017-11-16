@@ -25,9 +25,7 @@ $app = new Laravel\Lumen\Application(
 
 $app->withFacades();
 
-if ($app->environment('production')) {
-    $app->register(Jenssegers\Mongodb\MongodbServiceProvider::class);
-}
+$app->register(Jenssegers\Mongodb\MongodbServiceProvider::class);
 
 $app->withEloquent();
 
@@ -69,9 +67,9 @@ $app->singleton(
 //    App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    'auth' => App\Http\Middleware\Authenticate::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -85,7 +83,8 @@ $app->singleton(
 */
 
 // $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 /*

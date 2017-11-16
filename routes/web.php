@@ -12,5 +12,10 @@
 */
 
 $router->get('/', function () use ($router) {
-    return "Lumen is running. Conversation count: " . App\Conversation::count();
+    return "Lumen is running. Message history: <br />" . App\Message::all();
+});
+
+$router->group(['prefix' => 'v1'], function($router)
+{
+	$router->post('message','MessageController@createMessage');
 });
