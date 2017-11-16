@@ -17,5 +17,6 @@ $router->get('/', function () use ($router) {
 
 $router->group(['prefix' => 'v1'], function($router)
 {
+    $router->get('message','MessageController@index');    
 	$router->post('message','MessageController@createMessage');
 });

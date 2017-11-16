@@ -7,11 +7,12 @@ use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+    public function index() {
+        $messages = Message::all();
+
+        return response()->json($messages);
+    }
+
     public function createMessage(Request $request) {
         $message = Message::create($request->all());
 
