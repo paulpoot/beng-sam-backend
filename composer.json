@@ -10,7 +10,8 @@
         "vlucas/phpdotenv": "~2.2",
         "jenssegers/mongodb": "^3.3",
         "laravel/tinker": "^1.0",
-        "tymon/jwt-auth": "^1.0@dev"
+        "tymon/jwt-auth": "^1.0@dev",
+        "barryvdh/laravel-cors": "^0.10.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -22,7 +23,7 @@
             "App\\": "app/"
         },
         "classmap": [
-            "app/http/controllers"
+            "app/Http/Controllers"
         ]
     },
     "autoload-dev": {
