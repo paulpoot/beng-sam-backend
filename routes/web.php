@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -12,11 +14,21 @@
 */
 
 $router->get('/', function () use ($router) {
-    return "Lumen is running. Message history: <br />" . App\Message::all();
+    return "Lumen is running...";
 });
 
-$router->group(['prefix' => 'v1'], function($router)
+$router->group(['prefix' => 'v1/auth'], function($router)
+{
+    $router->post('register', 'AuthController@register');        
+    $router->post('login', 'AuthController@login');    
+});
+
+$router->group(['prefix' => 'v1', 'middleware' => 'auth'], function($router)
 {
     $router->get('message','MessageController@index');    
-	$router->post('message','MessageController@createMessage');
+    $router->post('message','MessageController@createMessage');
+    
+    $router->get('me', function(Request $request) {
+        return $request->user();
+    });
 });

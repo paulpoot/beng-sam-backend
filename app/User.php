@@ -8,10 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-use Illuminate\Support\Facades\Hash;
-
-class User extends Eloquent implements AuthenticatableContract, AuthorizableContract
+class User extends Eloquent implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
     use Authenticatable, Authorizable;
 
@@ -21,7 +20,7 @@ class User extends Eloquent implements AuthenticatableContract, AuthorizableCont
      * @var array
      */
     protected $fillable = [
-        'id', 'name', 'email',
+        'id', 'name', 'email', 'password'
     ];
 
     /**
@@ -30,8 +29,18 @@ class User extends Eloquent implements AuthenticatableContract, AuthorizableCont
      * @var array
      */
     protected $hidden = [
-        'created_at',  'updated_at', 'password',
+        'created_at',  'updated_at',
     ];
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
     /**
      * Define a one-to-many relationship with App\Message
