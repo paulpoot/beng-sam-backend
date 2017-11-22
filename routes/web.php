@@ -33,4 +33,11 @@ $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function($router)
     $router->get('me', function(Request $request) {
         return $request->user();
     });
+
+});
+
+$router->group(['prefix' => 'v1/admin', 'middleware' => 'admin'], function($router)
+{
+    $router->get('/', 'AdminController@index');
+    $router->post('message', 'AdminController@reply');
 });
