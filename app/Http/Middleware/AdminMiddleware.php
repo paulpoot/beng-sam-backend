@@ -15,10 +15,12 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if ( ! $request->user()->_id == 'sam') {
-            return response('Unauthorized.', 401);
+        if( $request->user() ) {
+            if( $request->user()->_id == 'sam' ) {
+                return $next($request);
+            }
         }
-
-        return $next($request);
+        
+        return response('Unauthorized.', 401);       
 	}
 }

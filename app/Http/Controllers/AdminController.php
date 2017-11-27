@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
+    public function show() {
+        return view('admin');
+    }
+
     public function index() {
         $users = User::all();
         $conversations = Conversation::all();
@@ -19,6 +23,26 @@ class AdminController extends Controller
             'conversations' => $conversations,
             'messages' => $messages
         ));
+    }
+
+    public function conversationIndex() {
+        $conversations = Conversation::all();
+        $users = User::all();
+
+        foreach($conversations as $conversation) {
+            $user = $users->find($conversation->user_id);
+            $conversation->name = $user->name;
+            $conversation->email = $user->email;
+        }
+
+        return response()->json($conversations);
+    }
+
+    public function conversation($id) {
+        $conversation = Conversation::find($id);
+        $conversation->messages = $conversation->messages()->get();
+
+        return response()->json($conversation);
     }
 
     public function reply(Request $request) {

@@ -87,7 +87,11 @@ $app->routeMiddleware([
 // $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 $app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+$app->register('Collective\Html\HtmlServiceProvider');
 // $app->register(App\Providers\EventServiceProvider::class);
+
+class_alias('Collective\Html\HtmlFacade', 'Html');
+class_alias('Collective\Html\FormFacade', 'Form');
 
 /*
 |--------------------------------------------------------------------------

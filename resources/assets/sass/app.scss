@@ -1,0 +1,12 @@
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "node_modules/bootstrap/scss/bootstrap";
+@import 'node_modules/bootstrap-vue/dist/bootstrap-vue';
+
+// Project 
+@import "global";
+@import "mixin";
+
+@import "layouts/dashboard";

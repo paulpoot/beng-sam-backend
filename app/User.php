@@ -10,6 +10,8 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
+use App\Conversation;
+
 class User extends Eloquent implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
     use Authenticatable, Authorizable;
@@ -47,5 +49,9 @@ class User extends Eloquent implements AuthenticatableContract, AuthorizableCont
      */
     public function messages() {
         return $this->hasMany('App\Message');
+    }
+
+    public function conversation() {
+        return $this->hasOne('App\Conversation');
     }
 }

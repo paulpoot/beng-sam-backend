@@ -1,0 +1,12 @@
+.page--dashboard {
+    .sidebar {
+        position: fixed;
+        padding: .5rem 1rem;
+        margin-top: 56px;
+        height: calc(100% - 56px);
+    }
+
+    main {
+        margin-top: 56px;
+    }
+}
