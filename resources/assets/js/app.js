@@ -12,6 +12,9 @@ window.Vuex = require('vuex');
 import BootstrapVue from 'bootstrap-vue'
 Vue.use(BootstrapVue);
 
+import axios from 'axios';
+import config from '../../../config';
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -20,59 +23,75 @@ Vue.use(BootstrapVue);
 Vue.component('main-navigation', require('./components/mainNavigation.vue'));
 Vue.component('authentication', require('./components/authentication.vue'));
 Vue.component('conversation-nav', require('./components/conversationNav.vue'));
-
+Vue.component('chat-window', require('./components/chatWindow.vue'));
 
 const store = new Vuex.Store({
-  state: {
-    isLoggedIn: localStorage.getItem('token')
-  },
-  getters: {
-    isLoggedIn: state => {
-      return state.isLoggedIn;
-    }
-  },
-  mutations: {
-    ["LOGIN"](state) {
-      state.pending = true;
+    state: {
+        isLoggedIn: localStorage.getItem('token'),
+        activeConversation: localStorage.getItem('activeConversation')
     },
-    ["LOGIN_SUCCESS"](state) {
-      state.isLoggedIn = true;
-      state.pending = false;
+    getters: {
+        isLoggedIn: state => {
+            return state.isLoggedIn;
+        },
+        activeConversation: state => {
+            return state.activeConversation;
+        }
     },
-    ["LOGOUT"](state) {
-      state.isLoggedIn = false;
-    }
-  },
-  actions: {
-    login({
-      state,
-      commit,
-      rootState
-    }, token) {
-      localStorage.setItem("token", token);
-      commit("LOGIN_SUCCESS");
+    mutations: {
+        ["LOGIN"](state) {
+            state.pending = true;
+        },
+        ["LOGIN_SUCCESS"](state) {
+            state.isLoggedIn = true;
+            state.pending = false;
+        },
+        ["LOGOUT"](state) {
+           state.isLoggedIn = false;
+        },
+        ['SELECT_CONVERSATION'](state, conversationId) {
+            state.activeConversation = conversationId;
+        }
     },
-    logout({
-      commit
-    }) {
-      localStorage.removeItem("token");
-      commit("LOGOUT");
-    }
-  },
+    actions: {
+        login({state, commit, rootState}, token) {
+            localStorage.setItem("token", token);
+            commit("LOGIN_SUCCESS");
+        },
+        logout({commit}) {
+            localStorage.removeItem("token");
+            commit("LOGOUT");
+        },
+        selectConversation({state, commit, rootState}, conversationId) {
+            localStorage.setItem("activeConversation", conversationId);
+            commit("SELECT_CONVERSATION", conversationId);
+        }
+    },
 })
 
 const app = new Vue({
     el: '#app',
     data: {
-      baseUrl: document.head.querySelector('meta[name="base-url"]').content
+        baseUrl: document.head.querySelector('meta[name="base-url"]').content
     },
     store,
     computed: {
-      ...Vuex.mapGetters(['isLoggedIn'])
+        ...Vuex.mapGetters(['isLoggedIn'])
     },
     created() {
-      if(this.isLoggedIn) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${this.isLoggedIn}`;        
-      }
+        if(this.isLoggedIn) {
+            var self = this;
+            axios.defaults.headers.common['Authorization'] = `Bearer ${this.isLoggedIn}`;                   
+
+            axios.get(config.API_URL + 'auth/refresh')
+            .then(function (response) {
+                var token = response.data.token;
+                self.$store.dispatch('login', token);
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            })
+            .catch(function (error) {
+                console.log('didnt get convs');
+            });
+        }
     }
 });

@@ -9957,6 +9957,38 @@ table.b-table > thead > tr > th.sorting_desc::before {
   opacity: 1;
 }
 
+.chat-window {
+  height: calc(100vh - 56px - 3 * 1rem - 38px);
+}
+
+.chat-window .chat-history {
+  height: 100%;
+}
+
+.chat-window .chat-message {
+  display: table;
+  padding: .5rem 1rem;
+  margin-bottom: .5rem;
+  max-width: 75%;
+  color: #fff;
+  background-color: #868e96;
+  border-radius: 12px;
+}
+
+.chat-window .chat-message .chat-message-time {
+  font-size: .75rem;
+}
+
+.chat-window .message-wrapper-sam {
+  -webkit-box-pack: right;
+      -ms-flex-pack: right;
+          justify-content: right;
+}
+
+.chat-window .message-wrapper-sam .chat-message {
+  background-color: #007bff;
+}
+
 .page--dashboard .sidebar {
   position: fixed;
   padding: .5rem 1rem;

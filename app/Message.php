@@ -13,7 +13,7 @@ class Message extends Eloquent
      * @var array
      */
     protected $fillable = [
-        'id', 'conversation_id', 'user_id', 'content'
+        'id', 'conversation_id', 'user_id', 'content', 'created_at'
     ];
 
     /**
@@ -22,7 +22,7 @@ class Message extends Eloquent
      * @var array
      */
     protected $hidden = [
-        'created_at',  'updated_at',
+        'updated_at',
     ];
 
     /**

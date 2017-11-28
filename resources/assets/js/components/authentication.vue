@@ -17,6 +17,7 @@
 <script>
     import Velocity from 'velocity-animate';
     import axios from 'axios';
+    import config from '../../../../config';
 
     export default {
         props: {
@@ -33,7 +34,7 @@
             login: function() {
                 var self = this;
 
-                axios.post('/v1/auth/login', {
+                axios.post(config.API_URL + 'auth/login', {
                     email: this.email,
                     password: this.password,
                 })

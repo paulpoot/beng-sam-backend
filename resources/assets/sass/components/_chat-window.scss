@@ -1,0 +1,29 @@
+.chat-window {
+    height: calc(100vh - 56px - 3 * 1rem - 38px);
+
+    .chat-history {
+        height: 100%;
+    }
+
+    .chat-message {
+        display: table;
+        padding: .5rem 1rem;
+        margin-bottom: .5rem;
+        max-width: 75%;
+        color: #fff;
+        background-color: theme-color("secondary");
+        border-radius: 12px;
+
+        .chat-message-time {
+            font-size: .75rem;
+        }
+    }
+    
+    .message-wrapper-sam {
+        justify-content: right;
+
+        .chat-message {
+            background-color: theme-color("primary");
+        }
+    }
+}
