@@ -1,6 +1,6 @@
 <template>
     <div class="chat-window container" v-if="conversation">
-        <div class="chat-history">
+        <div class="chat-history" ref="chatHistory">
             <div v-for="message in conversation.messages" :class="'row message-wrapper-' + message.user_id">
                 <div class="chat-message">
                     <div class="chat-message-content">
@@ -12,7 +12,6 @@
             </div>
         </div>
 
-        <div class="row">
             <b-input-group class="chat-input">
                 <b-input-group-addon @click="loadConversation">
                     Sam
@@ -31,7 +30,7 @@
                 </b-input-group-button>
 
             </b-input-group>
-        </div>
+
     </div>
 </template>
 
@@ -85,10 +84,17 @@
         watch: {
             conversationId: function() {
                 this.loadConversation();
+                setTimeout(function() {
+                    this.$refs.chatHistory.scrollTop = this.$refs.chatHistory.scrollHeight - this.$refs.chatHistory.clientHeight;
+                }.bind(this), 750);            
             }
         },
-        created() {
+        mounted() {
             this.loadConversation();
+            
+            setTimeout(function() {
+                this.$refs.chatHistory.scrollTop = this.$refs.chatHistory.scrollHeight - this.$refs.chatHistory.clientHeight;
+            }.bind(this), 1000);
 
             this.refreshInterval = setInterval(function () {
                 this.loadConversation();
