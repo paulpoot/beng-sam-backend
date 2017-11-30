@@ -13,7 +13,7 @@ class Message extends Eloquent
      * @var array
      */
     protected $fillable = [
-        'id', 'conversation_id', 'user_id', 'content', 'created_at'
+        'id', 'conversation_id', 'user_id', 'content', 'type', 'created_at'
     ];
 
     /**

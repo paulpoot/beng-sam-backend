@@ -49,12 +49,14 @@ class AdminController extends Controller
         $this->validate($request, [
             'content'     => 'required',
             'conversation_id' => 'required',
+            'type' => 'required',
         ]);
 
         return Message::create([
             'content' => $request['content'],
             'user_id' => $request->user()['_id'],
             'conversation_id' => $request['conversation_id'],
+            'type' => $request['type'],
         ]);
     }
 }
