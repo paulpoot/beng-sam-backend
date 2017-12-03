@@ -4,6 +4,8 @@
             <div v-for="message in conversation.messages" :class="'row message-wrapper-' + message.user_id">
                 <div class="chat-message">
                     <div class="chat-message-content">
+                        <img :src="message.image" v-if="message.image">
+                        <br />
                         {{ message.content }}
                         <br />
                         <span class="chat-message-time">{{ message.created_at }}</span>  
@@ -22,9 +24,9 @@
 
                 <!-- Attach Right button Group via slot -->
                 <b-input-group-button slot="right">
-                <b-dropdown text="Dropdown" variant="success" right>
-                    <b-dropdown-item>Action</b-dropdown-item>
-                    <b-dropdown-item>Action</b-dropdown-item>
+                <b-dropdown :text="type" variant="success" right>
+                    <b-dropdown-item @click="type = 'standard'">Standard</b-dropdown-item>
+                    <b-dropdown-item @click="type = 'link'">Link</b-dropdown-item>
                 </b-dropdown>
                 <b-btn variant="primary" @click="sendReply">Send</b-btn>
                 </b-input-group-button>
@@ -49,6 +51,7 @@
             return {
                 conversation: null,
                 content: null,
+                type: 'standard',
                 refreshInterval: null,
             }
         },
@@ -59,6 +62,14 @@
                 axios.get(config.API_URL + 'admin/conversation/' + this.conversationId)
                 .then(function (response) {
                     self.conversation = response.data;
+                    self.conversation.messages.forEach(function(item, index) {
+                        if(item.type == 'link') {
+                            if(item.content.indexOf('https://www.youtube.com/watch?v=') !== -1) {
+                                var videoId = item.content.split('v=')[1];
+                                item.image = 'https://img.youtube.com/vi/' + videoId + '/0.jpg';
+                            }
+                        }
+                    });
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -71,6 +82,7 @@
                     axios.post(config.API_URL + 'admin/message', {
                         conversation_id: this.conversationId,
                         content: this.content,
+                        type: this.type
                     })
                     .then(function (response) {
                         self.loadConversation();

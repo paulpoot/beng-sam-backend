@@ -18,6 +18,7 @@ class CreateMessagesTable extends Migration
             $table->integer('conversation_id')->unsigned();
             $table->string('user_id');
             $table->string('content');
+            $table->string('type');
             $table->nullableTimestamps();
 
             // $table->foreign('conversation_id')->references('id')->on('conversations')->onDelete('cascade')->onUpdate('cascade');
