@@ -16,6 +16,10 @@
         background-color: theme-color("secondary");
         border-radius: 12px;
 
+        img {
+            margin-bottom: 1rem;
+        }
+
         .chat-message-time {
             font-size: .75rem;
         }

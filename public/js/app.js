@@ -54962,6 +54962,27 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -54970,7 +54991,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            conversations: null
+            conversations: null,
+            showDeleteModal: false,
+            conversationToDelete: null
         };
     },
 
@@ -54982,14 +55005,24 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             var self = this;
 
             __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_2__config__["a" /* default */].API_URL + 'admin/conversation').then(function (response) {
-                console.log(response);
                 self.conversations = response.data;
-            }).catch(function (error) {
-                console.log('didnt get convs');
-            });
+            }).catch(function (error) {});
         },
         openConversation: function openConversation(conversationId) {
             this.$store.dispatch('selectConversation', conversationId);
+        },
+        openDeleteModal: function openDeleteModal(conversation) {
+            this.showDeleteModal = true;
+            this.conversationToDelete = conversation;
+        },
+        deleteConversation: function deleteConversation() {
+            var self = this;
+
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.delete(__WEBPACK_IMPORTED_MODULE_2__config__["a" /* default */].API_URL + 'admin/conversation/' + this.conversationToDelete._id).then(function (response) {
+                self.showDeleteModal = false;
+                self.conversationToDelete = null;
+                self.loadConversations();
+            });
         }
     }),
     mounted: function mounted() {
@@ -55009,28 +55042,23 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "nav",
-      { staticClass: "col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar" },
-      [
-        _c(
-          "ul",
-          { staticClass: "nav nav-pills flex-column" },
-          _vm._l(_vm.conversations, function(conversation) {
-            return _c(
-              "li",
-              {
-                staticClass: "nav-item",
-                on: {
-                  click: function($event) {
-                    _vm.openConversation(conversation._id)
-                  }
-                }
-              },
-              [
+  return _c(
+    "div",
+    [
+      _c(
+        "nav",
+        {
+          staticClass:
+            "col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar conversation-nav"
+        },
+        [
+          _c(
+            "ul",
+            { staticClass: "nav nav-pills flex-column" },
+            _vm._l(_vm.conversations, function(conversation) {
+              return _c("li", { staticClass: "nav-item" }, [
                 _c(
-                  "a",
+                  "div",
                   {
                     class:
                       _vm.conversationId === conversation._id
@@ -55039,19 +55067,119 @@ var render = function() {
                     attrs: { href: "#" }
                   },
                   [
-                    _vm._v(_vm._s(conversation.name) + " "),
-                    _c("span", { staticClass: "sr-only" }, [
-                      _vm._v("(current)")
-                    ])
+                    _c(
+                      "a",
+                      {
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            _vm.openConversation(conversation._id)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(conversation.name) +
+                            " "
+                        ),
+                        _c("span", { staticClass: "sr-only" }, [
+                          _vm._v("(current)")
+                        ])
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "close",
+                        attrs: { type: "button", "aria-label": "Close" },
+                        on: {
+                          click: function($event) {
+                            _vm.openDeleteModal(conversation)
+                          }
+                        }
+                      },
+                      [
+                        _c("span", { attrs: { "aria-hidden": "true" } }, [
+                          _vm._v("×")
+                        ])
+                      ]
+                    )
                   ]
                 )
-              ]
-            )
-          })
-        )
-      ]
-    )
-  ])
+              ])
+            })
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _vm.conversationToDelete
+        ? _c(
+            "b-modal",
+            {
+              attrs: {
+                id: "deleteConversation",
+                title: "Delete conversation?"
+              },
+              model: {
+                value: _vm.showDeleteModal,
+                callback: function($$v) {
+                  _vm.showDeleteModal = $$v
+                },
+                expression: "showDeleteModal"
+              }
+            },
+            [
+              _c("p", [
+                _vm._v(
+                  "Are you sure you want to delete this conversation with " +
+                    _vm._s(_vm.conversationToDelete.name) +
+                    "?"
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { attrs: { slot: "modal-footer" }, slot: "modal-footer" },
+                [
+                  _c(
+                    "b-btn",
+                    {
+                      staticClass: "float-right ml-2",
+                      attrs: { size: "md" },
+                      on: {
+                        click: function($event) {
+                          _vm.showDeleteModal = false
+                          _vm.conversationToDelete = null
+                        }
+                      }
+                    },
+                    [_vm._v("\n                Close\n            ")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "b-btn",
+                    {
+                      staticClass: "float-right",
+                      attrs: { size: "md", variant: "danger" },
+                      on: {
+                        click: function($event) {
+                          _vm.deleteConversation()
+                        }
+                      }
+                    },
+                    [_vm._v("\n                Delete\n            ")]
+                  )
+                ],
+                1
+              )
+            ]
+          )
+        : _vm._e()
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -55176,7 +55304,8 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             conversation: null,
             content: null,
             type: 'standard',
-            refreshInterval: null
+            refreshInterval: 5000,
+            urlRegex: /(?:https?|ftp):\/\/[\n\S]+/g
         };
     },
 
@@ -55189,14 +55318,13 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                 self.conversation.messages.forEach(function (item, index) {
                     if (item.type == 'link') {
                         if (item.content.indexOf('https://www.youtube.com/watch?v=') !== -1) {
-                            var videoId = item.content.split('v=')[1];
+                            item.link = item.content.match(self.urlRegex)[0];
+                            var videoId = item.link.split('v=')[1];
                             item.image = 'https://img.youtube.com/vi/' + videoId + '/0.jpg';
                         }
                     }
                 });
-            }).catch(function (error) {
-                console.log(error);
-            });
+            }).catch(function (error) {});
         },
         sendReply: function sendReply() {
             var self = this;
@@ -55208,6 +55336,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                     type: this.type
                 }).then(function (response) {
                     self.loadConversation();
+                    self.content = '';
                 }).catch(function (error) {
                     console.log(error);
                 });
@@ -55229,9 +55358,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             this.$refs.chatHistory.scrollTop = this.$refs.chatHistory.scrollHeight - this.$refs.chatHistory.clientHeight;
         }.bind(this), 1000);
 
-        this.refreshInterval = setInterval(function () {
+        this.refreshTimer = setInterval(function () {
             this.loadConversation();
-        }.bind(this), 5000);
+        }.bind(this), this.refreshInterval);
     }
 });
 
@@ -55262,7 +55391,7 @@ var render = function() {
                         ? _c("img", { attrs: { src: message.image } })
                         : _vm._e(),
                       _vm._v(" "),
-                      _c("br"),
+                      message.image ? _c("br") : _vm._e(),
                       _vm._v(
                         "\n                    " +
                           _vm._s(message.content) +
@@ -55287,7 +55416,7 @@ var render = function() {
               _c(
                 "b-input-group-addon",
                 { on: { click: _vm.loadConversation } },
-                [_vm._v("\n                Sam\n            ")]
+                [_vm._v("\n            Sam\n        ")]
               ),
               _vm._v(" "),
               _c("b-form-input", {

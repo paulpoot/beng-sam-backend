@@ -43,5 +43,6 @@ $router->group(['prefix' => 'v1/admin', 'middleware' => 'admin'], function($rout
     $router->get('/', 'AdminController@index');
     $router->post('message', 'AdminController@reply');
     $router->get('/conversation', 'AdminController@conversationIndex');
-    $router->get('/conversation/{id}', 'AdminController@conversation');
+    $router->get('/conversation/{id}', 'AdminController@conversationShow');
+    $router->delete('/conversation/{id}', 'AdminController@conversationDelete');
 });
