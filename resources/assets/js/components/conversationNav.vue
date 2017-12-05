@@ -7,10 +7,10 @@
                         <a href="#" @click="openConversation(conversation._id)">
                             {{ conversation.name }} <span class="sr-only">(current)</span>
                         </a>
-
-                        <button @click="openDeleteModal(conversation)" type="button" class="close" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        
+                        <div class="delete" @click="openDeleteModal(conversation)">
+                            <icon name="times"></icon>
+                        </div>
                     </div>
                 </li>
             </ul>

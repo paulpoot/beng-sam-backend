@@ -53,7 +53,7 @@ class AdminController extends Controller
         return response()->json();
     }
 
-    public function reply(Request $request) {
+    public function messageSend(Request $request) {
         $this->validate($request, [
             'content'     => 'required',
             'conversation_id' => 'required',
@@ -66,5 +66,12 @@ class AdminController extends Controller
             'conversation_id' => $request['conversation_id'],
             'type' => $request['type'],
         ]);
+    }
+
+    public function messageDelete($id) {
+        $message = Message::find($id);
+        $message->delete();
+        
+        return response()->json();
     }
 }

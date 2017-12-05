@@ -8,7 +8,12 @@
                         <br v-if="message.image" />
                         {{ message.content }}
                         <br />
-                        <span class="chat-message-time">{{ message.created_at }}</span>  
+                        <div class="chat-message-footer">
+                            <span class="chat-message-time">{{ message.created_at }}</span>
+                            <div class="delete" @click="deleteMessage(message)">
+                                <icon name="times"></icon>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -93,6 +98,14 @@
                     });
                 }
             },
+            deleteMessage: function(message) {
+                var self = this;
+
+                axios.delete(config.API_URL + 'admin/message/' + message._id)
+                .then(function (response) {
+                    self.loadConversation();
+                })
+            }
         },
         watch: {
             conversationId: function() {
