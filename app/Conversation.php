@@ -13,7 +13,7 @@ class Conversation extends Eloquent
      * @var array
      */
     protected $fillable = [
-        'id', 'name', 'user_id', 'bot_id',
+        'id', 'name', 'user_id', 'bot_id', 'updated_at'
     ];
 
     /**
@@ -22,7 +22,7 @@ class Conversation extends Eloquent
      * @var array
      */
     protected $hidden = [
-        'created_at',  'updated_at',
+        'created_at'
     ];
 
     /**

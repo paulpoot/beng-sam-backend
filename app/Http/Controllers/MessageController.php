@@ -38,6 +38,8 @@ class MessageController extends Controller
                 'conversation_id' => $conversation_id,
             ]);
 
+            $conversation->touch();
+
             return response()->json($message);
         } else {
             return response()->json(['Conversation ID not set'], 500);            
