@@ -60,6 +60,9 @@ class AdminController extends Controller
             'type' => 'required',
         ]);
 
+        $conversation = Conversation::find($request['conversation_id']);
+        $conversation->touch();
+
         return Message::create([
             'content' => $request['content'],
             'user_id' => $request->user()['_id'],
