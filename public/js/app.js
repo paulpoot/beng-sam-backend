@@ -66701,6 +66701,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 //
 //
 //
+//
 
 
 
@@ -66726,6 +66727,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
             __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_2__config__["a" /* default */].API_URL + 'admin/conversation/' + this.conversationId).then(function (response) {
                 self.conversation = response.data;
+                document.getElementById('scrollTo').scrollIntoView();
                 self.conversation.messages.forEach(function (item, index) {
                     if (item.type == 'link') {
                         if (item.content.indexOf('https://www.youtube.com/watch?v=') !== -1) {
@@ -66747,6 +66749,7 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
                     type: this.type
                 }).then(function (response) {
                     self.loadConversation();
+                    document.getElementById('scrollTo').scrollIntoView();
                     self.content = '';
                 }).catch(function (error) {
                     console.log(error);
@@ -66798,49 +66801,54 @@ var render = function() {
           _c(
             "div",
             { ref: "chatHistory", staticClass: "chat-history" },
-            _vm._l(_vm.conversation.messages, function(message) {
-              return _c(
-                "div",
-                { class: "row message-wrapper-" + message.user_id },
-                [
-                  _c("div", { staticClass: "chat-message" }, [
-                    _c("div", { staticClass: "chat-message-content" }, [
-                      message.image
-                        ? _c("img", { attrs: { src: message.image } })
-                        : _vm._e(),
-                      _vm._v(" "),
-                      message.image ? _c("br") : _vm._e(),
-                      _vm._v(
-                        "\n                    " +
-                          _vm._s(message.content) +
-                          "\n                    "
-                      ),
-                      _c("br"),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "chat-message-footer" }, [
-                        _c("span", { staticClass: "chat-message-time" }, [
-                          _vm._v(_vm._s(message.created_at))
-                        ]),
+            [
+              _vm._l(_vm.conversation.messages, function(message) {
+                return _c(
+                  "div",
+                  { class: "row message-wrapper-" + message.user_id },
+                  [
+                    _c("div", { staticClass: "chat-message" }, [
+                      _c("div", { staticClass: "chat-message-content" }, [
+                        message.image
+                          ? _c("img", { attrs: { src: message.image } })
+                          : _vm._e(),
                         _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass: "delete",
-                            on: {
-                              click: function($event) {
-                                _vm.deleteMessage(message)
+                        message.image ? _c("br") : _vm._e(),
+                        _vm._v(
+                          "\n                    " +
+                            _vm._s(message.content) +
+                            "\n                    "
+                        ),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "chat-message-footer" }, [
+                          _c("span", { staticClass: "chat-message-time" }, [
+                            _vm._v(_vm._s(message.created_at))
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            {
+                              staticClass: "delete",
+                              on: {
+                                click: function($event) {
+                                  _vm.deleteMessage(message)
+                                }
                               }
-                            }
-                          },
-                          [_c("icon", { attrs: { name: "times" } })],
-                          1
-                        )
+                            },
+                            [_c("icon", { attrs: { name: "times" } })],
+                            1
+                          )
+                        ])
                       ])
                     ])
-                  ])
-                ]
-              )
-            })
+                  ]
+                )
+              }),
+              _vm._v(" "),
+              _c("div", { attrs: { id: "scrollTo" } })
+            ],
+            2
           ),
           _vm._v(" "),
           _c(

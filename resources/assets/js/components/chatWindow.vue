@@ -17,6 +17,7 @@
                     </div>
                 </div>
             </div>
+            <div id="scrollTo"></div>
         </div>
 
         <b-input-group class="chat-input">
@@ -68,6 +69,7 @@
                 axios.get(config.API_URL + 'admin/conversation/' + this.conversationId)
                 .then(function (response) {
                     self.conversation = response.data;
+                    document.getElementById('scrollTo').scrollIntoView();
                     self.conversation.messages.forEach(function(item, index) {
                         if(item.type == 'link') {
                             if(item.content.indexOf('https://www.youtube.com/watch?v=') !== -1) {
@@ -91,6 +93,7 @@
                     })
                     .then(function (response) {
                         self.loadConversation();
+                        document.getElementById('scrollTo').scrollIntoView();
                         self.content = '';
                     })
                     .catch(function (error) {
