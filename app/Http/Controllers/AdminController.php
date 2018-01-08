@@ -38,11 +38,16 @@ class AdminController extends Controller
         return response()->json($conversations);
     }
 
-    public function conversationShow($id) {
+    public function conversationShow(Request $request, $id) {
         $conversation = Conversation::find($id);
         $conversation->messages = $conversation->messages()->get();
 
-        return response()->json($conversation);
+        if($conversation->updated_at > $request->header('If-Modified-Since')) {
+            return response()->json($conversation)
+                ->header('Last-Modified', $conversation->updated_at);
+        } else {
+            return response()->json([], 304)->header('Last-Modified', $conversation->updated_at);
+        }
     }
 
     public function conversationDelete($id) {
