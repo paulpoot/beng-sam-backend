@@ -38,19 +38,30 @@ class AdminController extends Controller
         return response()->json($conversations);
     }
 
-    public function conversation($id) {
+    public function conversationShow($id) {
         $conversation = Conversation::find($id);
         $conversation->messages = $conversation->messages()->get();
 
         return response()->json($conversation);
     }
 
-    public function reply(Request $request) {
+    public function conversationDelete($id) {
+        $conversation = Conversation::find($id);
+        $messages = $conversation->messages()->delete();
+        $conversation = $conversation->delete();
+        
+        return response()->json();
+    }
+
+    public function messageSend(Request $request) {
         $this->validate($request, [
             'content'     => 'required',
             'conversation_id' => 'required',
             'type' => 'required',
         ]);
+
+        $conversation = Conversation::find($request['conversation_id']);
+        $conversation->touch();
 
         return Message::create([
             'content' => $request['content'],
@@ -58,5 +69,12 @@ class AdminController extends Controller
             'conversation_id' => $request['conversation_id'],
             'type' => $request['type'],
         ]);
+    }
+
+    public function messageDelete($id) {
+        $message = Message::find($id);
+        $message->delete();
+        
+        return response()->json();
     }
 }

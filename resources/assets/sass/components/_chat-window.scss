@@ -16,8 +16,28 @@
         background-color: theme-color("secondary");
         border-radius: 12px;
 
+        img {
+            margin-bottom: 1rem;
+        }
+
+        .chat-message-footer {
+            margin-top: .75rem;
+        }
+
         .chat-message-time {
             font-size: .75rem;
+            vertical-align: 3px;
+        }
+        
+        .delete {
+            float: right;
+            margin-left: 1rem;
+            display: inline;
+            vertical-align: middle;
+        }
+
+        .delete:hover {
+            cursor: pointer;
         }
     }
     

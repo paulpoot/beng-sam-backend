@@ -1,0 +1,21 @@
+.conversation-nav {
+    .nav-link {
+        &.active a {
+            color: $white;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+
+        .delete {
+            float: right;
+            display: inline;
+            vertical-align: middle;
+        }
+
+        .delete:hover {
+            cursor: pointer;
+        }
+    }
+}

@@ -9977,8 +9977,28 @@ table.b-table > thead > tr > th.sorting_desc::before {
   border-radius: 12px;
 }
 
+.chat-window .chat-message img {
+  margin-bottom: 1rem;
+}
+
+.chat-window .chat-message .chat-message-footer {
+  margin-top: .75rem;
+}
+
 .chat-window .chat-message .chat-message-time {
   font-size: .75rem;
+  vertical-align: 3px;
+}
+
+.chat-window .chat-message .delete {
+  float: right;
+  margin-left: 1rem;
+  display: inline;
+  vertical-align: middle;
+}
+
+.chat-window .chat-message .delete:hover {
+  cursor: pointer;
 }
 
 .chat-window .message-wrapper-sam {
@@ -9989,6 +10009,24 @@ table.b-table > thead > tr > th.sorting_desc::before {
 
 .chat-window .message-wrapper-sam .chat-message {
   background-color: #007bff;
+}
+
+.conversation-nav .nav-link.active a {
+  color: #fff;
+}
+
+.conversation-nav .nav-link a:hover {
+  text-decoration: none;
+}
+
+.conversation-nav .nav-link .delete {
+  float: right;
+  display: inline;
+  vertical-align: middle;
+}
+
+.conversation-nav .nav-link .delete:hover {
+  cursor: pointer;
 }
 
 .page--dashboard .sidebar {

@@ -12,8 +12,12 @@ window.Vuex = require('vuex');
 import BootstrapVue from 'bootstrap-vue'
 Vue.use(BootstrapVue);
 
-import axios from 'axios';
-import config from '../../../config';
+import 'vue-awesome/icons'
+import Icon from 'vue-awesome/components/Icon'
+Vue.component('icon', Icon)
+
+import axios from 'axios'
+import config from '../../../config'
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
