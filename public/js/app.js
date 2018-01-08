@@ -4175,7 +4175,7 @@ Popper.Defaults = Defaults;
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
-    API_URL: 'http://sam.app/v1/'
+    API_URL: 'https://api.teampopsicle.nl/v1/'
 });
 
 /***/ }),
@@ -66717,17 +66717,36 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
             content: null,
             type: 'standard',
             refreshInterval: 5000,
-            urlRegex: /(?:https?|ftp):\/\/[\n\S]+/g
+            urlRegex: /(?:https?|ftp):\/\/[\n\S]+/g,
+            firstLoad: true,
+            conversationLastModified: null
         };
     },
 
     methods: {
         loadConversation: function loadConversation() {
             var self = this;
+            var axiosConfig;
 
-            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_2__config__["a" /* default */].API_URL + 'admin/conversation/' + this.conversationId).then(function (response) {
+            if (this.firstLoad) {
+                this.firstLoad = false;
+            } else if (this.conversationLastModified) {
+                axiosConfig = {
+                    headers: {
+                        'If-Modified-Since': this.conversationLastModified,
+                        'Authorization': __WEBPACK_IMPORTED_MODULE_1_axios___default.a.defaults.headers.common['Authorization']
+                    }
+                };
+            }
+
+            __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get(__WEBPACK_IMPORTED_MODULE_2__config__["a" /* default */].API_URL + 'admin/conversation/' + this.conversationId, axiosConfig).then(function (response) {
                 self.conversation = response.data;
-                document.getElementById('scrollTo').scrollIntoView();
+
+                if (self.conversationLastModified < response.headers.get('Last-Modified')) {
+                    document.getElementById('scrollTo').scrollIntoView();
+                    self.conversationLastModified = response.headers.get('Last-Modified');
+                }
+
                 self.conversation.messages.forEach(function (item, index) {
                     if (item.type == 'link') {
                         if (item.content.indexOf('https://www.youtube.com/watch?v=') !== -1) {

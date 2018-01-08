@@ -60,16 +60,35 @@
                 type: 'standard',
                 refreshInterval: 5000,
                 urlRegex: /(?:https?|ftp):\/\/[\n\S]+/g,
+                firstLoad: true,
+                conversationLastModified: null,
             }
         },
         methods: {
             loadConversation: function() {
                 var self = this;
+                var axiosConfig;
 
-                axios.get(config.API_URL + 'admin/conversation/' + this.conversationId)
+                if(this.firstLoad) {
+                    this.firstLoad = false;
+                } else if(this.conversationLastModified) {
+                    axiosConfig = { 
+                        headers: {
+                            'If-Modified-Since': this.conversationLastModified,
+                            'Authorization': axios.defaults.headers.common['Authorization']
+                        }
+                    }; 
+                }   
+
+                axios.get(config.API_URL + 'admin/conversation/' + this.conversationId, axiosConfig)
                 .then(function (response) {
                     self.conversation = response.data;
-                    document.getElementById('scrollTo').scrollIntoView();
+
+                    if(self.conversationLastModified < response.headers.get('Last-Modified')) {
+                        document.getElementById('scrollTo').scrollIntoView();
+                        self.conversationLastModified = response.headers.get('Last-Modified');
+                    }
+
                     self.conversation.messages.forEach(function(item, index) {
                         if(item.type == 'link') {
                             if(item.content.indexOf('https://www.youtube.com/watch?v=') !== -1) {
