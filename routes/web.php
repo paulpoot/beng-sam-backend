@@ -21,7 +21,7 @@ $router->group(['prefix' => 'v1/auth'], function($router)
 {
     $router->post('register', 'AuthController@register');        
     $router->post('login', 'AuthController@login'); 
-    $router->get('refresh', 'AuthController@refresh');   
+    $router->get('refresh', 'AuthController@refresh');
 });
 
 $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function($router)
@@ -29,11 +29,9 @@ $router->group(['prefix' => 'v1', 'middleware' => 'auth'], function($router)
     $router->get('message','MessageController@index');    
     $router->post('message','MessageController@createMessage');
     $router->get('conversation', 'ConversationController@loadMessages');
-    
-    $router->get('me', function(Request $request) {
-        return $request->user();
-    });
 
+    $router->get('user', 'UserController@show');
+    $router->patch('user', 'UserController@update');
 });
 
 $router->get('/admin', 'AdminController@show');

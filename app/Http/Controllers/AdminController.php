@@ -39,7 +39,7 @@ class AdminController extends Controller
     }
 
     public function conversationShow(Request $request, $id) {
-        $conversation = Conversation::find($id);
+        $conversation = Conversation::findOrFail($id);
         $conversation->messages = $conversation->messages()->get();
 
         if($conversation->updated_at > $request->header('If-Modified-Since')) {
@@ -65,15 +65,21 @@ class AdminController extends Controller
             'type' => 'required',
         ]);
 
-        $conversation = Conversation::find($request['conversation_id']);
-        $conversation->touch();
-
-        return Message::create([
+        if(Message::create([
             'content' => $request['content'],
             'user_id' => $request->user()['_id'],
             'conversation_id' => $request['conversation_id'],
             'type' => $request['type'],
-        ]);
+        ])) {
+            $conversation = Conversation::find($request['conversation_id']);
+            $conversation->touch();
+    
+            $user = User::find($conversation->user_id);
+            $user->messagesReceived++;
+            $user->save();
+        };
+
+        return response()->json();
     }
 
     public function messageDelete($id) {

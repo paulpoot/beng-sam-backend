@@ -13,11 +13,15 @@ class ConversationController extends Controller
 
         $conversation = Conversation::all()->where('user_id', $user['_id'])->first();
 
-        if($conversation->updated_at > $request->header('If-Modified-Since')) {
-            return response()->json($conversation->messages()->get())
-                ->header('Last-Modified', $conversation->updated_at);
+        if($conversation) {
+            if($conversation->updated_at > $request->header('If-Modified-Since')) {
+                return response()->json($conversation->messages()->get())
+                    ->header('Last-Modified', $conversation->updated_at);
+            } else {
+                return response()->json([], 304)->header('Last-Modified', $conversation->updated_at);
+            }
         } else {
-            return response()->json([], 304)->header('Last-Modified', $conversation->updated_at);
+            return response()->json([], 404);
         }
     }
 }

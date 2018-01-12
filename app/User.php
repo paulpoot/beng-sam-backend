@@ -22,7 +22,7 @@ class User extends Eloquent implements AuthenticatableContract, AuthorizableCont
      * @var array
      */
     protected $fillable = [
-        'id', 'name', 'email', 'password'
+        'id', 'name', 'age', 'email', 'password', 'experience', 'messagesSent', 'messagesReceived'
     ];
 
     /**
@@ -31,7 +31,7 @@ class User extends Eloquent implements AuthenticatableContract, AuthorizableCont
      * @var array
      */
     protected $hidden = [
-        'created_at',  'updated_at',
+        'password', 'created_at',  'updated_at',
     ];
 
     public function getJWTIdentifier()
