@@ -4175,7 +4175,8 @@ Popper.Defaults = Defaults;
 
 "use strict";
 /* harmony default export */ __webpack_exports__["a"] = ({
-    API_URL: 'https://api.teampopsicle.nl/v1/'
+    // API_URL: 'https://api.teampopsicle.nl/v1/'
+    API_URL: 'http://sam.app/v1/'
 });
 
 /***/ }),

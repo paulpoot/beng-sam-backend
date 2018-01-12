@@ -15,28 +15,27 @@ class MessageController extends Controller
     }
 
     public function createMessage(Request $request) {
-        $user = $request->user()['_id'];
+        $user = $request->user();
 
-        $conversation_id = null;
-        $conversation = Conversation::all()->where('user_id', $user)->first();
+        $conversation = Conversation::all()->where('user_id', $user['_id'])->first();
 
-        if($conversation) {
-            $conversation_id = $conversation->id;
-        }
-        
-        if(!$conversation_id) {
-            $conversation_id = Conversation::create([
-                'user_id' => $user,
+        if(!$conversation) {
+            $conversation = Conversation::create([
+                'user_id' => $user['_id'],
                 'bot_id' => 'sam',
-            ])->id;
+            ]);
         }
 
-        if($conversation_id) {
+        if($conversation->id) {
             $message = Message::create([
                 'content' => $request['content'],
-                'user_id' => $request->user()['_id'],
-                'conversation_id' => $conversation_id,
+                'user_id' => $user['_id'],
+                'conversation_id' => $conversation->id,
             ]);
+
+            $user->experience += strlen($message->content);
+            $user->messagesSent++;
+            $user->save();
 
             $conversation->touch();
 

@@ -25,12 +25,14 @@ class AuthController extends Controller
     {
         $this->validate($request, [
             'name'     => 'required|max:16',
+            'age'      => 'required|numeric',
             'email'    => 'required|email|max:255',
             'password' => 'required',
         ]);
 
         if( User::create([
             'name' => $request['name'],
+            'age' => $request['age'],
             'email' => $request['email'],
             'password' => app('hash')->make($request['password']),
         ])) {
